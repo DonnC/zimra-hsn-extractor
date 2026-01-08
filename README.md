@@ -1,9 +1,11 @@
-# ZIMRA HSN Code Scrapper
+# ZIMRA HSN Code Extractor
 
 This repository provides a **reliable, resumable data extraction utility** for obtaining
 Zimbabwe tariff / HSN codes and descriptions for downstream compliance and ERP usage.
 
 Get upto-date info and more on [ZIMRA website](https://etariff.zimra.co.zw/#)
+
+Check out the last run [hsn codes here (csv)](data/)
 
 ---
 
@@ -47,7 +49,7 @@ hsn_code,description
 ## 🔧 Installation
 
 ```bash
-git clone https://github.com/DonnC/zimra-hsn-scrapper.git
+git clone https://github.com/DonnC/zimra-hsn-extractor.git
 cd zimra-hsn-scrapper
 pip install -r requirements.txt
 ```
@@ -100,6 +102,6 @@ Users are responsible for ensuring usage aligns with applicable laws, terms, and
 
 ## 🏗️ Intended Integration
 
-* Frappe / ERPNext
+* ERP systems
 * Customs & trade compliance tools
 * Reporting & analytics pipelines
