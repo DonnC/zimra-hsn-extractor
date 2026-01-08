@@ -50,7 +50,7 @@ hsn_code,description
 
 ```bash
 git clone https://github.com/DonnC/zimra-hsn-extractor.git
-cd zimra-hsn-scrapper
+cd zimra-hsn-extractor
 pip install -r requirements.txt
 ```
 
