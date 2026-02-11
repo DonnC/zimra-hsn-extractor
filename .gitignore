@@ -189,4 +189,4 @@ cython_debug/
 #.idea/
 
 progress.json
-logs/
+data/logs/

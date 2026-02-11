@@ -2,11 +2,14 @@ import os
 import csv
 import json
 import time
-import logging
 import requests
 import re
 from datetime import datetime
 from dotenv import load_dotenv
+
+from .logger import get_logger
+
+logger = get_logger("hsn_extractor")
 
 # =========================================================
 # ENV SETUP
@@ -25,7 +28,7 @@ SIM_DATE = datetime.strptime(SIM_DATE_RAW[:8], "%Y%m%d").date()
 
 CSV_FILE = f"data/zimra_hsn_codes_{SIM_DATE}.csv"
 PROGRESS_FILE = os.getenv("PROGRESS_FILE", "progress.json")
-LOG_FILE = os.getenv("LOG_FILE", "logs/scraper.log")
+LOG_FILE = os.getenv("LOG_FILE", "../data/logs/scraper.log")
 
 REQUEST_DELAY = float(os.getenv("REQUEST_DELAY", 0.5))
 
@@ -38,30 +41,6 @@ BASE_PARAMS = {
     "exclusions": "true",
     "dutyTypeId": 0,
 }
-
-# =========================================================
-# LOGGING (FILE + CONSOLE)
-# =========================================================
-
-os.makedirs(os.path.dirname(LOG_FILE), exist_ok=True)
-os.makedirs("data", exist_ok=True)
-
-logger = logging.getLogger("zimra_hsn_extractor")
-logger.setLevel(logging.INFO)
-
-formatter = logging.Formatter(
-    "%(asctime)s [%(levelname)s] %(message)s"
-)
-
-file_handler = logging.FileHandler(LOG_FILE)
-file_handler.setFormatter(formatter)
-
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(formatter)
-
-if not logger.handlers:
-    logger.addHandler(file_handler)
-    logger.addHandler(console_handler)
 
 # =========================================================
 # DESCRIPTION CLEANUP HELPERS
@@ -252,9 +231,3 @@ def run():
 
     logger.info("ZIMRA HSN extraction finished")
 
-# =========================================================
-# ENTRY POINT
-# =========================================================
-
-if __name__ == "__main__":
-    run()

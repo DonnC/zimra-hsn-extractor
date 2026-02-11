@@ -1,107 +1,112 @@
-# ZIMRA HSN Code Extractor
+# ZIMRA Extractors
+A modular data extraction toolkit for Zimbabwe Revenue Authority (ZIMRA) documents.
 
-This repository provides a **reliable, resumable data extraction utility** for obtaining
-Zimbabwe tariff / HSN codes and descriptions for downstream compliance and ERP usage.
-
-Get upto-date info and more on [ZIMRA website](https://etariff.zimra.co.zw/#)
-
-Check out the last run [hsn codes here (csv)](data/)
+This project extracts structured compliance data from official ZIMRA PDFs and converts them into machine-readable formats (CSV) for integration with ERP systems such as ERPNext.
 
 ---
 
-## 🎯 Purpose
+## 🚀 Purpose
 
-- Extract **tariff classification codes and descriptions**
-- Produce a **clean CSV dataset**
-- Support **restartable execution** for large datasets
-- Enable **offline usage** once extracted
+ZIMRA publishes compliance data in different format:
 
----
+* PAYE tax tables
+* Tariff / HSN codes
+* VAT rates
+* Customs duty schedules
 
-## 📦 Output Format
+These are not API-ready.
 
-```csv
-hsn_code,description
-84021910,Fire-tube and other shell boilers
-84029000,Parts of boilers
-84042000,Condensers for steam or other vapour power units
-````
+This project converts them into structured datasets for:
 
----
-
-## ⚙️ Features
-
-* Incremental persistence (crash-safe)
-* Deduplication by code
-* Configurable via environment variables
-* Polite request pacing
-* Full execution logging
+* System automation=
+* VAT automation
+* Compliance dashboards
+* Data versioning & archiving
 
 ---
 
-## 🧩 Requirements
+## 📂 Project Structure
 
-* Python 3.9+
-* pip
-
----
-
-## 🔧 Installation
-
-```bash
-git clone https://github.com/DonnC/zimra-hsn-extractor.git
-cd zimra-hsn-extractor
-pip install -r requirements.txt
+```
+zimra-extractors/
+├── extractors/
+├── data/
+│   ├── raw/
+│   ├── processed/
+│   └── logs/
+├── main.py
+└── README.md
 ```
 
 ---
 
-## 🔐 Configuration
+## 📌 Current Extractors
 
-Create a `.env` file in the project root:
+### 1️⃣ HSN Extractor
 
-```env
-ZIMRA_API_BASE_URL=...
-ZIMRA_API_AUTH=...
-ZIMRA_COUNTRY_ID=252
-ZIMRA_CLASSIFICATION_TYPE=163
-ZIMRA_SIMULATION_DATE=YYYYMMDDT00:00
-REQUEST_DELAY=0.4
+Extracts tariff / commodity codes from ZIMRA publications.
+
+Output:
+
 ```
+data/processed/hsn_<year>.csv
+```
+
+### 2️⃣ PAYE Tax Table Extractor
+
+Extracts:
+
+* Income ranges
+* Tax rate %
+* Deduct amount
+* AIDS levy %
+* Currency
+* Frequency (Daily, Weekly, Monthly, etc.)
+* Year metadata
+
+Output:
+
+```
+data/processed/zimra_paye_tables_<year>.csv
+```
+
+## 🧾 Output Format (PAYE)
+
+`currency | frequency | year | month_from | month_to | income_from | income_to | rate_percent | deduct_amount | aids_levy_percent`
+
 ---
 
 ## ▶️ Usage
 
-```bash
-python scraper.py
+Place ZIMRA PDFs into:
+
+```
+data/raw/
 ```
 
-The script can be safely stopped and restarted at any time.
-Progress is automatically resumed.
+Run:
 
----
+```
+python main.py
+```
 
-## 📁 Generated Files
+Extracted files will appear in:
 
-| File                  | Purpose           |
-| --------------------- | ----------------- |
-| `zimra_hsn_codes.csv` | Extracted dataset |
-| `progress.json`       | Resume state      |
-| `logs/scraper.log`    | Execution log     |
+```
+data/processed/
+```
 
----
+Logs:
 
-## ⚠️ Disclaimer
+```
+data/logs/zimra_extractors.log
+```
 
-This tool is intended for **internal data synchronization, research, and compliance workflows**.
-Users are responsible for ensuring usage aligns with applicable laws, terms, and policies.
 
-> Data is provided as is, with no guarantee of accuracy or upto-date
 
----
+## ⚖️ Compliance Notice
 
-## 🏗️ Intended Integration
+This tool does not alter official tax data.
+It only restructures publicly issued ZIMRA documents into machine-readable formats.
 
-* ERP systems
-* Customs & trade compliance tools
-* Reporting & analytics pipelines
+Always verify outputs against official publications.
